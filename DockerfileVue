@@ -1,0 +1,16 @@
+# build stage
+FROM node:lts-alpine
+
+RUN npm install -g http-server
+
+WORKDIR /app
+COPY ./app_vue .
+
+RUN npm install
+
+RUN yarn install
+RUN yarn build
+# RUN yarn serve
+
+EXPOSE 8080
+CMD [ "yarn", "serve" ]

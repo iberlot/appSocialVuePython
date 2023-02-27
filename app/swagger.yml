@@ -1,0 +1,115 @@
+#http://localhost:5000/api/ui
+
+openapi: 3.0.0
+
+info:
+  title: "RP Flask REST API"
+  description: "An API for our Wolfcampus"
+  version: "1.0.0"
+
+servers:
+  - url: "/api"
+
+components:
+  schemas:
+    Acc:
+      type: "object"
+      required:
+        - email
+      properties:
+        email:
+          type: "string"
+        password:
+          type: "string"
+  parameters:
+    email:
+      name: "email"
+      description: "Email of the account to get"
+      in: path
+      required: True
+      schema:
+        type: "string"
+    
+
+paths:
+  /account:
+    get:
+      operationId: "account.read_all"
+      tags:
+        - "Account"
+      summary: "Read the list of accounts"
+      responses:
+        "200":
+          description: "Successfully read acc list"
+
+    post:
+      operationId: "account.create"
+      tags:
+        - "Account"
+      summary: "Create an acc"
+      requestBody:
+          description: "Account to create"
+          required: True
+          content:
+            application/json:
+              schema:
+                x-body-name: "acc"
+                $ref: "#/components/schemas/Acc"
+      responses:
+        "201":
+          description: "Successfully created Acc"
+    put:
+      tags:
+        - "Account"
+      operationId: "account.validate"
+      summary: "Validate an acc"
+      requestBody:
+          description: "Account to validate"
+          required: True
+          content:
+            application/json:
+              schema:
+                x-body-name: "acc"
+                $ref: "#/components/schemas/Acc"
+      responses:
+        "204":
+          description: "Successfully logged in acc"
+  
+  /account/{email}:
+    get:
+      operationId: "account.read_one"
+      tags:
+        - "Account"
+      summary: "Read one account"
+      parameters:
+        - $ref: "#/components/parameters/email"
+      responses:
+        "200":
+          description: "Successfully read acc"
+    put:
+      tags:
+        - "Account"
+      operationId: "account.update"
+      summary: "Update an acc"
+      parameters:
+        - $ref: "#/components/parameters/email"
+      responses:
+        "200":
+          description: "Successfully updated acc"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              x-body-name: "account"
+              $ref: "#/components/schemas/Acc"
+    delete:
+      tags:
+        - "Account"
+      operationId: "account.delete"
+      summary: "Delete an acc"
+      parameters:
+        - $ref: "#/components/parameters/email"
+      responses:
+        "204":
+          description: "Successfully deleted acc"
+
